@@ -1,18 +1,15 @@
 // Sift is a small routing library that abstracts away details like starting a
 // listener on a port, and provides a simple function (serve) that has an API
 // to invoke a function for a specific path.
-import { json, serve, validateRequest } from 'https://deno.land/x/sift@0.6.0/mod.ts'
 // TweetNaCl is a cryptography library that we use to verify requests
 // from Discord.
-import nacl from "https://cdn.skypack.dev/tweetnacl@v1.0.3?dts";
-
-enum DiscordCommandType {
-  Ping = 1,
-  ApplicationCommand = 2,
-}
+import nacl from 'nacl';
+import * as sift from 'sift';
+import { hello } from '../../../src/commands/hello.ts';
+import { DiscordCommandType } from '../../../src/types/commands.ts';
 
 // For all requests to "/" endpoint, we want to invoke home() handler.
-serve({
+sift.serve({
   '/discord-bot-fr': home,
 })
 
@@ -20,13 +17,13 @@ serve({
 async function home(request: Request) {
   // validateRequest() ensures that a request is of POST method and
   // has the following headers.
-  const { error } = await validateRequest(request, {
+  const { error } = await sift.validateRequest(request, {
     POST: {
       headers: ['X-Signature-Ed25519', 'X-Signature-Timestamp'],
     },
   })
   if (error) {
-    return json({ error: error.message }, { status: error.status })
+    return sift.json({ error: error.message }, { status: error.status })
   }
 
   // verifySignature() verifies if the request is coming from Discord.
@@ -34,7 +31,7 @@ async function home(request: Request) {
   // important as Discord sends invalid requests to test our verification.
   const { valid, body } = await verifySignature(request)
   if (!valid) {
-    return json(
+    return sift.json(
       { error: 'Invalid request' },
       {
         status: 401,
@@ -46,7 +43,7 @@ async function home(request: Request) {
   // Discord performs Ping interactions to test our application.
   // Type 1 in a request implies a Ping interaction.
   if (type === DiscordCommandType.Ping) {
-    return json({
+    return sift.json({
       type: 1, // Type 1 in a response is a Pong interaction response type.
     })
   }
@@ -54,22 +51,12 @@ async function home(request: Request) {
   // Type 2 in a request is an ApplicationCommand interaction.
   // It implies that a user has issued a command.
   if (type === DiscordCommandType.ApplicationCommand) {
-    const { value } = data.options.find(
-      (option: { name: string; value: string }) => option.name === 'name'
-    )
-    return json({
-      // Type 4 responds with the below message retaining the user's
-      // input at the top.
-      type: 4,
-      data: {
-        content: `Hello, ${value}!`,
-      },
-    })
+    return hello(data);
   }
 
   // We will return a bad request error as a valid Discord request
   // shouldn't reach here.
-  return json({ error: 'bad request' }, { status: 400 })
+  return sift.json({ error: 'bad request' }, { status: 400 })
 }
 
 /** Verify whether the request is coming from Discord. */
