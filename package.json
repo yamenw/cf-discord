@@ -1,0 +1,14 @@
+{
+  "name": "cf-discord",
+  "version": "1.0.0",
+  "description": "Discord bot on supabase FaaS",
+  "main": "index.js",
+  "devDependencies": {
+    "supabase": "^1.68.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
