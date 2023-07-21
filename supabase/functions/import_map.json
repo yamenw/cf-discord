@@ -1,6 +1,7 @@
 {
     "imports": {
         "sift": "https://deno.land/x/sift@0.6.0/mod.ts",
-        "nacl": "https://cdn.skypack.dev/tweetnacl@v1.0.3?dts"
+        "nacl": "https://cdn.skypack.dev/tweetnacl@v1.0.3?dts",
+        "supabase-js": "https://esm.sh/@supabase/supabase-js@2"
     }
 }
