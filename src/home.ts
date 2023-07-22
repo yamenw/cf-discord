@@ -1,7 +1,9 @@
 import nacl from 'nacl';
 import * as sift from 'sift';
 import { DiscordCommandType } from './types/commands.ts';
-import { hello } from './commands/hello.ts';
+import { interactionSchema } from './schema/schema.ts';
+import { handleCommand } from './commands/commands.ts';
+
 
 export async function home(request: Request) {
     const { error } = await sift.validateRequest(request, {
@@ -23,7 +25,7 @@ export async function home(request: Request) {
         )
     }
 
-    const { type = 0, data = { options: [] } } = JSON.parse(body)
+    const { type = 0, data } = interactionSchema.parse(JSON.parse(body))
     switch (type) {
         case DiscordCommandType.Ping:
             return sift.json({
@@ -31,7 +33,7 @@ export async function home(request: Request) {
             })
 
         case DiscordCommandType.ApplicationCommand:
-            return hello(data);
+            return handleCommand(data);
 
         default:
             return sift.json({ error: 'ETYPEZERO: bad request' }, { status: 400 })
