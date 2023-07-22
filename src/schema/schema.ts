@@ -9,8 +9,6 @@ const registerData = z.object({
     name: z.literal('register')
 })
 
-export type RegisterData = z.infer<typeof registerData>;
-
 export const dataSchema = z.discriminatedUnion('name', [
     z.object({
         options: z.array(z.any()),
@@ -25,3 +23,4 @@ export const interactionSchema = z.object({
 })
 
 export type InteractionData = z.infer<typeof dataSchema>;
+export type RegisterData = z.infer<typeof registerData>;

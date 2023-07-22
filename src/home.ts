@@ -33,7 +33,7 @@ export async function home(request: Request) {
             })
 
         case DiscordCommandType.ApplicationCommand:
-            return handleCommand(data);
+            return await handleCommand(data);
 
         default:
             return sift.json({ error: 'ETYPEZERO: bad request' }, { status: 400 })

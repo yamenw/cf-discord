@@ -2,13 +2,13 @@ import { InteractionData } from "../schema/schema.ts";
 import { hello } from "./hello.ts";
 import { registerUser } from "./register/register.ts";
 
-export function handleCommand(data: InteractionData): Response {
+export async function handleCommand(data: InteractionData): Promise<Response> {
     switch (data.name) {
         case 'hello':
             return hello(data)
 
         case 'register':
-            return registerUser(data);
+            return await registerUser(data);
 
         default: {
             // deno-lint-ignore no-unused-vars
