@@ -17,10 +17,19 @@ export const dataSchema = z.discriminatedUnion('name', [
     registerData
 ])
 
+export const memberSchema = z.object({
+    user: z.object({
+        id: z.string(),
+        username: z.string(),
+    })
+})
+
 export const interactionSchema = z.object({
     type: z.number().min(1).max(3).int(),
-    data: dataSchema
+    data: dataSchema,
+    member: memberSchema,
 })
 
 export type InteractionData = z.infer<typeof dataSchema>;
 export type RegisterData = z.infer<typeof registerData>;
+export type MemberSchema = z.infer<typeof memberSchema>;

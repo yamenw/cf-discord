@@ -13,7 +13,7 @@ export interface Database {
         Row: {
           creation_time: string
           id: number
-          problem_id: number
+          problem_id: string | null
           rating: number
           user_handle: string
           verdict: string
@@ -21,7 +21,7 @@ export interface Database {
         Insert: {
           creation_time: string
           id?: never
-          problem_id: number
+          problem_id?: string | null
           rating: number
           user_handle: string
           verdict: string
@@ -29,17 +29,24 @@ export interface Database {
         Update: {
           creation_time?: string
           id?: never
-          problem_id?: number
+          problem_id?: string | null
           rating?: number
           user_handle?: string
           verdict?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "submissions_user_handle_fkey"
+            columns: ["user_handle"]
+            referencedRelation: "users"
+            referencedColumns: ["cf_handle"]
+          }
+        ]
       }
       users: {
         Row: {
           cf_handle: string | null
-          discord_user_id: string | null
+          discord_user_id: string
           id: number
           inserted_at: string
           last_fetched: number | null
@@ -47,7 +54,7 @@ export interface Database {
         }
         Insert: {
           cf_handle?: string | null
-          discord_user_id?: string | null
+          discord_user_id: string
           id?: number
           inserted_at?: string
           last_fetched?: number | null
@@ -55,7 +62,7 @@ export interface Database {
         }
         Update: {
           cf_handle?: string | null
-          discord_user_id?: string | null
+          discord_user_id?: string
           id?: number
           inserted_at?: string
           last_fetched?: number | null
