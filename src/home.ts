@@ -25,15 +25,15 @@ export async function home(request: Request) {
         )
     }
 
-    const { type = 0, data, member } = interactionSchema.parse(JSON.parse(body))
-    switch (type) {
+    const interaction = interactionSchema.parse(JSON.parse(body))
+    switch (interaction.type) {
         case DiscordCommandType.Ping:
             return sift.json({
                 type: 1,
             })
 
         case DiscordCommandType.ApplicationCommand:
-            return await handleCommand(data, member);
+            return await handleCommand(interaction);
 
         default:
             return sift.json({ error: 'ETYPEZERO: bad request' }, { status: 400 })

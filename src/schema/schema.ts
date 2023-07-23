@@ -30,6 +30,7 @@ export const interactionSchema = z.object({
     member: memberSchema,
 })
 
-export type InteractionData = z.infer<typeof dataSchema>;
+export type DataSchema = z.infer<typeof dataSchema>;
 export type RegisterData = z.infer<typeof registerData>;
 export type MemberSchema = z.infer<typeof memberSchema>;
+export type InteractionSchema = z.infer<typeof interactionSchema>;
