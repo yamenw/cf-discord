@@ -19,7 +19,7 @@ export interface IProblem {
     name: string
     type: string
     points: number
-    rating: number
+    rating: number | null;
     tags: string[]
 }
 

@@ -1,3 +1,5 @@
+import { ISubmission, ISubmissionModel } from "../types/codeforces.ts";
+
 export async function getProblems(start: number, handle: string): Promise<unknown[]> {
     const url = new URL('https://codeforces.com/api/user.status')
     url.searchParams.append('count', '9999');
@@ -24,6 +26,25 @@ export async function getProblems(start: number, handle: string): Promise<unknow
     throw new Error('Incorrect data format');
 }
 
-export function transformCFData(data: unknown[]) {
-
+export function transformData(data: readonly unknown[], user_handle: string): ISubmissionModel[] {
+    const result: ISubmissionModel[] = []; // TODO: better error handling
+    for (let index = 0; index < data.length; index++)
+        try {
+            const elem = data[index] as ISubmission;
+            if (!(elem?.problem?.rating))
+                continue;
+            if (elem?.verdict !== 'OK')
+                continue;
+            result.push({
+                creation_time: new Date(elem.creationTimeSeconds).toISOString(),
+                rating: elem.problem.rating,
+                verdict: elem.verdict,
+                user_handle,
+                problem_id: null,
+            })
+            // deno-lint-ignore no-unused-vars
+        } catch (error) {
+            /* each element is assumed to be correct and incorrectly formatted items are ignored for performance reasons*/
+        }
+    return result;
 }

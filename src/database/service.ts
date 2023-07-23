@@ -2,7 +2,7 @@ import { Database } from "../../database.types.ts"
 import { ISubmissionModel } from "../types/codeforces.ts";
 import { supabase } from "./db.ts"
 
-async function registerUser(user: Database['public']['Tables']['users']['Insert']) {
+async function insertUser(user: Database['public']['Tables']['users']['Insert']) {
     return await supabase.from('users').insert(user);
 }
 
@@ -18,7 +18,7 @@ async function updateSubmissionCount(userId: string, problem_count: number) {
 }
 
 export const dbService = {
-    registerUser,
+    insertUser,
     insertSubmissions,
     updateSubmissionCount
 }
