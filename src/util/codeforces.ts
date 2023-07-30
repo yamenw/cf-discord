@@ -1,3 +1,4 @@
+import { dbService } from "../database/service.ts";
 import { ISubmission, ISubmissionModel } from "../types/codeforces.ts";
 
 export async function getProblems(start: number, handle: string): Promise<unknown[]> {
@@ -26,6 +27,32 @@ export async function getProblems(start: number, handle: string): Promise<unknow
     throw new Error('Incorrect data format');
 }
 
+export async function updateUserSubmissions(handle: string, discord_user_id: string, start: number) {
+    const problems = await getProblems(start, handle);
+    const payload = transformData(problems, handle);
+    await dbService.insertUser({ cf_handle: handle, discord_user_id: discord_user_id });
+    const [{ error: error1 }, { error: error2 }] = await Promise.all([
+        dbService.updateSubmissionCount(discord_user_id, problems.length),
+        dbService.insertSubmissions(payload)
+    ])
+    if (error1) {
+        console.error(error1); // TODO: Refactor this mess
+        throw error1;
+    }
+    if (error2) {
+        console.error(error2);
+        throw error2;
+    }
+    return problems.length;
+}
+
+
+/**
+ * Pure function
+ * @param data arrat of problems fetched from the CF API
+ * @param user_handle the CF handle to be attached to these names
+ * @returns the problems in parsed correctly for insertion in the database
+ */
 export function transformData(data: readonly unknown[], user_handle: string): ISubmissionModel[] {
     const result: ISubmissionModel[] = []; // TODO: better error handling
     for (let index = 0; index < data.length; index++)
