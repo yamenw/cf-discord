@@ -17,8 +17,8 @@ export async function updateUser(member: MemberSchema): Promise<IInteractionResp
 
     const problems = await getProblems(last_fetched, cf_handle);
 
-    const prob_count = await updateUserSubmissions(cf_handle, member.user.id, problems);
-
+    const prob_count = await updateUserSubmissions(cf_handle, member.user.id, problems, last_fetched);
+    // TODO: if prob count is incremented correctly
     return {
         type: 4,
         data: {
