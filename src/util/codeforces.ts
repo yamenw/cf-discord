@@ -36,7 +36,7 @@ export function transformData(data: readonly unknown[], user_handle: string): IS
             if (elem?.verdict !== 'OK')
                 continue;
             result.push({
-                creation_time: new Date(elem.creationTimeSeconds).toISOString(),
+                creation_time: new Date(elem.creationTimeSeconds * 1000).toISOString(),
                 rating: elem.problem.rating,
                 verdict: elem.verdict,
                 user_handle,
