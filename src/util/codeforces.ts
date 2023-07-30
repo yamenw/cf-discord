@@ -27,10 +27,8 @@ export async function getProblems(start: number, handle: string): Promise<unknow
     throw new Error('Incorrect data format');
 }
 
-export async function updateUserSubmissions(handle: string, discord_user_id: string, start: number) {
-    const problems = await getProblems(start, handle);
+export async function updateUserSubmissions(handle: string, discord_user_id: string, problems: unknown[]) {
     const payload = transformData(problems, handle);
-    await dbService.insertUser({ cf_handle: handle, discord_user_id: discord_user_id });
     const [{ error: error1 }, { error: error2 }] = await Promise.all([
         dbService.updateSubmissionCount(discord_user_id, problems.length),
         dbService.insertSubmissions(payload)

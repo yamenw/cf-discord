@@ -1,3 +1,4 @@
+import { json } from "sift";
 import { InteractionSchema } from "../schema/schema.ts";
 import { hello } from "./hello.ts";
 import { registerUser } from "./register/register.ts";
@@ -9,7 +10,7 @@ export async function handleCommand(interaction: InteractionSchema): Promise<Res
             return hello(interaction.data.options)
 
         case 'register':
-            return await registerUser(interaction.data, interaction.member);
+            return json(await registerUser(interaction.data, interaction.member));
 
         case "update":
             return await updateUser(interaction.member);
