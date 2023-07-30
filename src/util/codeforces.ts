@@ -19,7 +19,8 @@ export async function getProblems(start: number, handle: string): Promise<unknow
             throw new Error('Codeforces returned non-OK status');
         }
     } catch (error) {
-        throw new Error(error);
+        console.error(error)
+        throw new Error('Could not retrieve problems from the CF API.');
     }
     const { result } = data;
     if (Array.isArray(result))

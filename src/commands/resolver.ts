@@ -13,7 +13,7 @@ export async function handleCommand(interaction: InteractionSchema): Promise<Res
             return json(await registerUser(interaction.data, interaction.member));
 
         case "update":
-            return await updateUser(interaction.member);
+            return json(await updateUser(interaction.member));
 
         default: {
             // deno-lint-ignore no-unused-vars
