@@ -35,12 +35,15 @@ export function transformData(data: readonly unknown[], user_handle: string): IS
                 continue;
             if (elem?.verdict !== 'OK')
                 continue;
+            if (!(elem?.problem?.contestId && elem?.problem?.index))
+                continue;
+            const problem_id = `${elem?.problem?.contestId}${elem?.problem?.index}`
             result.push({
                 creation_time: new Date(elem.creationTimeSeconds * 1000).toISOString(),
                 rating: elem.problem.rating,
                 verdict: elem.verdict,
                 user_handle,
-                problem_id: null,
+                problem_id,
             })
             // deno-lint-ignore no-unused-vars
         } catch (error) {
