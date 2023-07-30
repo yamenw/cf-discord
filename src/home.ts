@@ -2,7 +2,7 @@ import nacl from 'nacl';
 import * as sift from 'sift';
 import { DiscordCommandType } from './types/commands.ts';
 import { interactionSchema } from './schema/schema.ts';
-import { handleCommand } from './commands/commands.ts';
+import { handleCommand } from './commands/resolver.ts';
 
 
 export async function home(request: Request) {

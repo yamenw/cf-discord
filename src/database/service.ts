@@ -17,8 +17,16 @@ async function updateSubmissionCount(userId: string, problem_count: number) {
         .eq('discord_user_id', userId);
 }
 
+async function getUserProblemCount(userId: string) {
+    return await supabase
+        .from('users')
+        .select('last_fetched')
+        .eq('discord_user_id', userId);
+}
+
 export const dbService = {
     insertUser,
     insertSubmissions,
-    updateSubmissionCount
+    updateSubmissionCount,
+    getUserProblemCount,
 }
