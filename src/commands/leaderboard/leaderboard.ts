@@ -5,13 +5,23 @@ import { IInteractionResponse } from "../../types/commands.ts";
 import { rankUsersLegacy } from "../../util/ranking.ts";
 
 export async function leaderboard(payload: LeaderboardData): Promise<IInteractionResponse> {
-    const today = new Date();
-    const days_since = +getOption('days_since', payload.options);
-    if (days_since && !isNaN(days_since)) {
-        today.setDate(today.getDate())
+    const startDate = new Date();
+    let days_since: number;
+    if (payload?.options) {
+        days_since = +(getOption('days_since', payload.options) ?? 0);
+        console.log(payload.options)
+        if (days_since && !isNaN(days_since)) {
+            startDate.setDate(startDate.getDate() - days_since)
+        } else {
+            days_since = 30;
+            startDate.setDate(startDate.getDate() - 30);
+        }
+    } else {
+        days_since = 30;
+        startDate.setDate(startDate.getDate() - 30);
     }
-    const startOfCurrMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    const { error, data } = await dbService.getSubmissionsByDate(startOfCurrMonth);
+
+    const { error, data } = await dbService.getSubmissionsByDate(startDate);
     if (error) {
         console.error(error);
         return { data: { content: 'Something went wrong while fetching the data' }, type: 4 }
@@ -21,5 +31,5 @@ export async function leaderboard(payload: LeaderboardData): Promise<IInteractio
         .slice(0, 15)
         .map(([name, score], index) => `#${index}: **${name}**, **${score}** points`)
         .join('\n');
-    return { data: { content: rankings }, type: 4 }
+    return { data: { content: `## Leaderboard in the past ${days_since} days:\n${rankings ? rankings : 'No data.'}` }, type: 4 }
 }

@@ -5,10 +5,10 @@
         {
             "name": "days_since",
             "description": "How many days old a submission is allowed to be to be taken into account",
-            "type": 3,
+            "type": 4,
             "required": false,
-            "min_length": 1,
-            "max_length": 365
+            "min": 1,
+            "max": 365
         }
     ]
 }

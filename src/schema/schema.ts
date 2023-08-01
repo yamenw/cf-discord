@@ -4,7 +4,7 @@ const registerData = z.object({
     options: z.array(z.object({
         type: z.literal(3),
         name: z.literal("handle"),
-        value: z.string().min(1)
+        value: z.string().min(1),
     })),
     name: z.literal('register')
 })
@@ -14,11 +14,12 @@ export const updateData = z.object({
 });
 
 export const leaderboardData = z.object({
-    options: z.array(z.object({
-        type: z.literal(3),
-        name: z.literal("days_since"),
-        value: z.string().min(1).max(365)
-    })),
+    options: z.optional(z.array(
+        z.object({
+            type: z.literal(4),
+            name: z.literal("days_since"),
+            value: z.number().min(1).max(365),
+        }))),
     name: z.literal('leaderboard'),
 });
 

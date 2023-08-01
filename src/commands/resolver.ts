@@ -17,7 +17,7 @@ export async function handleCommand(interaction: InteractionSchema): Promise<Res
             return json(await updateUser(interaction.member));
 
         case 'leaderboard':
-            return json(await leaderboard());
+            return json(await leaderboard(interaction.data));
 
         default: {
             // deno-lint-ignore no-unused-vars
