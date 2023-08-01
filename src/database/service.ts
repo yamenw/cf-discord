@@ -24,9 +24,23 @@ async function getUserProfile(userId: string) {
         .eq('discord_user_id', userId);
 }
 
+/**
+ * 
+ * @param time Time in Milliseconds
+ * @returns 
+ */
+async function getSubmissionsByDate(time: Date) {
+    return await supabase
+        .from('submissions')
+        .select('rating, user_handle')
+        .gt('creation_time', time.toISOString())
+        .eq('verdict', 'OK');
+}
+
 export const dbService = {
     insertUser,
     insertSubmissions,
     updateSubmissionCount,
     getUserProfile,
+    getSubmissionsByDate,
 }
