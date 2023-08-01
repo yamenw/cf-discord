@@ -10,7 +10,7 @@ const scores: { [key: number]: number } = {
     3100: 100, 3200: 100, 3300: 100, 3400: 100
 }
 
-export const rankUsers = (submissions: { rating: number; user_handle: string; }[]) => {
+export const rankUsersLegacy = (submissions: { rating: number; user_handle: string; }[]) => {
     const userToRating: Record<string, number> = {};
     for (const submission of submissions) {
         if (submission.user_handle in userToRating) {
