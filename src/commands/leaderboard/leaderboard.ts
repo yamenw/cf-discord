@@ -9,7 +9,6 @@ export async function leaderboard(payload: LeaderboardData): Promise<IInteractio
     let days_since: number;
     if (payload?.options) {
         days_since = +(getOption('days_since', payload.options) ?? 0);
-        console.log(payload.options)
         if (days_since && !isNaN(days_since)) {
             startDate.setDate(startDate.getDate() - days_since)
         } else {
