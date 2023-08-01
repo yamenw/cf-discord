@@ -14,6 +14,11 @@ export const updateData = z.object({
 });
 
 export const leaderboardData = z.object({
+    options: z.array(z.object({
+        type: z.literal(3),
+        name: z.literal("days_since"),
+        value: z.string().min(1).max(365)
+    })),
     name: z.literal('leaderboard'),
 });
 
@@ -40,8 +45,9 @@ export const interactionSchema = z.object({
     member: memberSchema,
 })
 
-export type DataSchema = z.infer<typeof dataSchema>;
+export type LeaderboardData = z.infer<typeof leaderboardData>;
 export type RegisterData = z.infer<typeof registerData>;
+export type DataSchema = z.infer<typeof dataSchema>;
 export type MemberSchema = z.infer<typeof memberSchema>;
 export type InteractionSchema = z.infer<typeof interactionSchema>;
 // TODO: rename all this

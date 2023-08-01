@@ -1,9 +1,15 @@
 import { dbService } from "../../database/service.ts";
+import { getOption } from "../../helper/get-option.ts";
+import { LeaderboardData } from "../../schema/schema.ts";
 import { IInteractionResponse } from "../../types/commands.ts";
 import { rankUsersLegacy } from "../../util/ranking.ts";
 
-export async function leaderboard(): Promise<IInteractionResponse> {
+export async function leaderboard(payload: LeaderboardData): Promise<IInteractionResponse> {
     const today = new Date();
+    const days_since = +getOption('days_since', payload.options);
+    if (days_since && !isNaN(days_since)) {
+        today.setDate(today.getDate())
+    }
     const startOfCurrMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const { error, data } = await dbService.getSubmissionsByDate(startOfCurrMonth);
     if (error) {
