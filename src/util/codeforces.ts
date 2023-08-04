@@ -77,3 +77,36 @@ export function transformData(data: readonly unknown[], user_handle: string): IS
         }
     return result;
 }
+interface Profile {
+    lastName: string
+    lastOnlineTimeSeconds: number
+    rating: number
+    friendOfCount: number
+    titlePhoto: string
+    handle: string
+    avatar: string
+    firstName: string
+    contribution: number
+    organization: string
+    rank: string
+    maxRating: number
+    registrationTimeSeconds: number
+    maxRank: string
+}
+
+export async function getUserProfile(handle: string): Promise<string | undefined> {
+    const url = new URL('https://codeforces.com/api/user.info');
+    url.searchParams.append('handles', handle);
+    let res: { status: string, result: Profile[] };
+    try {
+        res = await (await fetch(url)).json();
+        if (res.status !== 'OK') {
+            console.error("CF API returned non-OK status");
+            return;
+        }
+        return res.result[0].titlePhoto;
+    } catch (error) {
+        console.error(error);
+        return;
+    }
+}

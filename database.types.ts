@@ -13,7 +13,7 @@ export interface Database {
         Row: {
           creation_time: string
           id: number
-          problem_id: string | null
+          problem_id: string
           rating: number
           user_handle: string
           verdict: string
@@ -21,7 +21,7 @@ export interface Database {
         Insert: {
           creation_time: string
           id?: never
-          problem_id?: string | null
+          problem_id: string
           rating: number
           user_handle: string
           verdict: string
@@ -29,7 +29,7 @@ export interface Database {
         Update: {
           creation_time?: string
           id?: never
-          problem_id?: string | null
+          problem_id?: string
           rating?: number
           user_handle?: string
           verdict?: string
@@ -50,6 +50,7 @@ export interface Database {
           id: number
           inserted_at: string
           last_fetched: number | null
+          profile_picture: string | null
           updated_at: string
         }
         Insert: {
@@ -58,6 +59,7 @@ export interface Database {
           id?: number
           inserted_at?: string
           last_fetched?: number | null
+          profile_picture?: string | null
           updated_at?: string
         }
         Update: {
@@ -66,6 +68,7 @@ export interface Database {
           id?: number
           inserted_at?: string
           last_fetched?: number | null
+          profile_picture?: string | null
           updated_at?: string
         }
         Relationships: []
