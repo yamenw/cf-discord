@@ -12,9 +12,16 @@ async function getRankings(): Promise<Response> {
         )
     }
     const rankings = getProfiles(data);
+
+    const corsHeaders = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE',
+        'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, Content-Type',
+    }
+
     return new Response(
         JSON.stringify(rankings),
-        { headers: { "Content-Type": "application/json" } },
+        { headers: { "Content-Type": "application/json", ...corsHeaders } },
     )
 }
 
