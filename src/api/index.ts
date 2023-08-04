@@ -1,8 +1,7 @@
 import { dbService } from "../database/service.ts";
-import { rankUsersLegacy } from "../util/ranking.ts";
+import { getProfiles } from "../util/ranking.ts";
 
-export async function resolveREST(req: Request): Promise<Response> {
-    // const body = await req.json();
+async function getRankings(): Promise<Response> {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - 30);
     const { error, data } = await dbService.getSubmissionsByDate(startDate);
@@ -12,9 +11,13 @@ export async function resolveREST(req: Request): Promise<Response> {
             { headers: { "Content-Type": "application/json" }, status: 500 },
         )
     }
-    const rankings = Object.entries(rankUsersLegacy(data)).sort((a, b) => b[1] - a[1])
+    const rankings = getProfiles(data);
     return new Response(
-        JSON.stringify({ data: rankings }),
+        JSON.stringify(rankings),
         { headers: { "Content-Type": "application/json" } },
     )
+}
+
+export async function resolveREST(req: Request): Promise<Response> {
+    return getRankings();
 }

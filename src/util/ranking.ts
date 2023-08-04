@@ -1,3 +1,5 @@
+import { Person } from "../types/api.ts";
+
 const scores: { [key: number]: number } = {
     0: 0,
     800: 10, 900: 10, 1000: 10,
@@ -10,7 +12,9 @@ const scores: { [key: number]: number } = {
     3100: 100, 3200: 100, 3300: 100, 3400: 100
 }
 
-export const rankUsersLegacy = (submissions: { rating: number; user_handle: string; }[]) => {
+type Submissions = { rating: number; user_handle: string; }[]; //TODO: tidy this
+
+export const rankUsersLegacy = (submissions: Submissions) => {
     const userToRating: Record<string, number> = {};
     for (const submission of submissions) {
         if (submission.user_handle in userToRating) {
@@ -20,4 +24,17 @@ export const rankUsersLegacy = (submissions: { rating: number; user_handle: stri
         }
     }
     return userToRating;
+}
+
+export function getProfiles(submissions: Submissions): Person[] {
+    return Object.entries(rankUsersLegacy(submissions))
+        .sort((a, b) => b[1] - a[1])
+        .map(([handle, score], index) => ({
+            display_name: 'Placeholder',
+            handle: handle,
+            image: 'placeholder',
+            rank: index,
+            score: score,
+            solved: 9999,
+        }))
 }
