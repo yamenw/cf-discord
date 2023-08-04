@@ -41,5 +41,5 @@ export interface ISubmissionModel {
     creation_time: string;
     verdict: "WRONG_ANSWER" | "OK";
     user_handle: string;
-    problem_id: string | null;
+    problem_id: string;
 }

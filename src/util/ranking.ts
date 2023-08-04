@@ -1,3 +1,4 @@
+import { dbService } from "../database/service.ts";
 import { Person } from "../types/api.ts";
 
 const scores: { [key: number]: number } = {
@@ -12,11 +13,11 @@ const scores: { [key: number]: number } = {
     3100: 100, 3200: 100, 3300: 100, 3400: 100
 }
 
-type Submissions = { rating: number; user_handle: string; }[]; //TODO: tidy this
-type Rankings = Record<string, { count: number, score: number }>;
+export type Submissions = { rating: number; user_handle: string; }[]; //TODO: tidy this
+export type Rankings = Record<string, { count: number, score: number, pfp?: string }>;
 
-export const rankUsersLegacy = (submissions: Submissions): Rankings => {
-    const userToRating: Rankings = {};
+export const rankUsersLegacy = (submissions: Submissions, intitialValue: Rankings = {}): Rankings => {
+    const userToRating: Rankings = intitialValue ?? {};
     for (const submission of submissions) {
         if (submission.user_handle in userToRating) {
             const { count: prevCount, score: prevScore } = userToRating[submission.user_handle];
@@ -28,13 +29,23 @@ export const rankUsersLegacy = (submissions: Submissions): Rankings => {
     return userToRating;
 }
 
-export function getProfiles(submissions: Submissions): Person[] {
-    return Object.entries(rankUsersLegacy(submissions))
+export async function getProfiles(submissions: Submissions): Promise<Person[]> {
+    const { data, error } = await dbService.getAllUserProfiles();
+    let rankings: Rankings = {};
+    if (error) {
+        console.error(error);
+    } else {
+        rankings = Object.fromEntries(
+            data.map(profile => ([profile.cf_handle, { count: 0, score: 0, pfp: profile.profile_picture }]))
+        );
+    }
+    const placeholder = 'https://assets.stickpng.com/images/5845e687fb0b0755fa99d7ee.png';
+    return Object.entries(rankUsersLegacy(submissions, rankings))
         .sort((a, b) => b[1].score - a[1].score)
-        .map(([handle, { count, score }], index) => ({
+        .map(([handle, { count, score, pfp }], index) => ({
             display_name: 'Placeholder',
             handle: handle,
-            image: 'placeholder',
+            image: pfp ?? placeholder,
             rank: index,
             score: score,
             solved: count,

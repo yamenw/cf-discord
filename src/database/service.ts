@@ -24,6 +24,12 @@ async function getUserProfile(userId: string) {
         .eq('discord_user_id', userId);
 }
 
+async function getAllUserProfiles() {
+    return await supabase
+        .from('users')
+        .select('cf_handle, profile_picture');
+}
+
 /**
  * 
  * @param time Time in Milliseconds
@@ -43,4 +49,5 @@ export const dbService = {
     updateSubmissionCount,
     getUserProfile,
     getSubmissionsByDate,
+    getAllUserProfiles,
 }

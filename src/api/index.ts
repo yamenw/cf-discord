@@ -11,7 +11,7 @@ async function getRankings(): Promise<Response> {
             { headers: { "Content-Type": "application/json" }, status: 500 },
         )
     }
-    const rankings = getProfiles(data);
+    const rankings = await getProfiles(data);
 
     const corsHeaders = {
         'Access-Control-Allow-Origin': '*',
