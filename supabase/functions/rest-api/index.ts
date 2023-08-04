@@ -1,16 +1,7 @@
 import { serve } from "http"
-
-console.log("Hello from Functions!")
+import { resolveREST } from "../../../src/api/index.ts";
 
 serve(async (req) => {
-  const { name } = await req.json()
-  const data = {
-    message: `Hello ${name}!`,
-  }
-
-  return new Response(
-    JSON.stringify(data),
-    { headers: { "Content-Type": "application/json" } },
-  )
+  return await resolveREST(req);
 })
 
