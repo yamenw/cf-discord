@@ -13,14 +13,16 @@ const scores: { [key: number]: number } = {
 }
 
 type Submissions = { rating: number; user_handle: string; }[]; //TODO: tidy this
+type Rankings = Record<string, { count: number, score: number }>;
 
-export const rankUsersLegacy = (submissions: Submissions) => {
-    const userToRating: Record<string, number> = {};
+export const rankUsersLegacy = (submissions: Submissions): Rankings => {
+    const userToRating: Rankings = {};
     for (const submission of submissions) {
         if (submission.user_handle in userToRating) {
-            userToRating[submission.user_handle] += scores[submission.rating];
+            const { count: prevCount, score: prevScore } = userToRating[submission.user_handle];
+            userToRating[submission.user_handle] = { score: prevScore + scores[submission.rating], count: prevCount + 1 };
         } else {
-            userToRating[submission.user_handle] = scores[submission.rating];
+            userToRating[submission.user_handle] = { score: scores[submission.rating], count: 1 };
         }
     }
     return userToRating;
@@ -28,13 +30,13 @@ export const rankUsersLegacy = (submissions: Submissions) => {
 
 export function getProfiles(submissions: Submissions): Person[] {
     return Object.entries(rankUsersLegacy(submissions))
-        .sort((a, b) => b[1] - a[1])
-        .map(([handle, score], index) => ({
+        .sort((a, b) => b[1].score - a[1].score)
+        .map(([handle, { count, score }], index) => ({
             display_name: 'Placeholder',
             handle: handle,
             image: 'placeholder',
             rank: index,
             score: score,
-            solved: 9999,
+            solved: count,
         }))
 }

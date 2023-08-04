@@ -26,9 +26,9 @@ export async function leaderboard(payload: LeaderboardData): Promise<IInteractio
         return { data: { content: 'Something went wrong while fetching the data' }, type: 4 }
     }
     const rankings = Object.entries(rankUsersLegacy(data))
-        .sort((a, b) => b[1] - a[1])
+        .sort((a, b) => b[1].score - a[1].score)
         .slice(0, 15)
-        .map(([name, score], index) => `#${index}: **${name}**, **${score}** points`)
+        .map(([name, { count, score }], index) => `#${index}: **${name}**, **${score}** points, **${count}** solved.`)
         .join('\n');
     return { data: { content: `## Leaderboard in the past ${days_since} days:\n${rankings ? rankings : 'No data.'}` }, type: 4 }
 }
