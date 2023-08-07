@@ -1,4 +1,6 @@
-export function getOption(name: string, data: { name: string; value: string | number }[]) {
+export function getOption(name: string, data?: { name: string; value: string | number }[]) {
+    if (!data)
+        return undefined;
     const option = data?.find(
         (option: { name: string; value: string | number }) => option.name === name
     )
