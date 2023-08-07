@@ -9,6 +9,21 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      scores: {
+        Row: {
+          cf_rating: number
+          weight: number | null
+        }
+        Insert: {
+          cf_rating?: number
+          weight?: number | null
+        }
+        Update: {
+          cf_rating?: number
+          weight?: number | null
+        }
+        Relationships: []
+      }
       submissions: {
         Row: {
           creation_time: string
@@ -78,7 +93,16 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_scores: {
+        Args: {
+          days: number
+        }
+        Returns: {
+          user_handle: string
+          count: number
+          score: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
