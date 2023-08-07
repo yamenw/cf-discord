@@ -15,7 +15,7 @@ export async function leaderboard(payload: LeaderboardData): Promise<IInteractio
     }
 
     const rankings = data
-        .sort((a, b) => a.score - b.score)
+        .sort((a, b) => b.score - a.score)
         .slice(0, 15)
         .map(({ count, score, user_handle }, index) => `#${index}: **${user_handle}**, **${score}** points, **${count}** solved.`)
         .join('\n');
