@@ -103,6 +103,17 @@ export interface Database {
           score: number
         }[]
       }
+      get_user_scores_rest: {
+        Args: {
+          days: number
+        }
+        Returns: {
+          user_handle: string
+          count: number
+          score: number
+          pfp: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
