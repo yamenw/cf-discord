@@ -21,9 +21,15 @@ export const rankUsersLegacy = (submissions: Submissions, intitialValue: Ranking
     for (const submission of submissions) {
         if (submission.user_handle in userToRating) {
             const { count: prevCount, score: prevScore } = userToRating[submission.user_handle];
-            userToRating[submission.user_handle] = { score: prevScore + scores[submission.rating], count: prevCount + 1 };
+            userToRating[submission.user_handle] = {
+                score: prevScore + scores[submission.rating],
+                count: prevCount + 1
+            };
         } else {
-            userToRating[submission.user_handle] = { score: scores[submission.rating], count: 1 };
+            userToRating[submission.user_handle] = {
+                score: scores[submission.rating],
+                count: 1
+            };
         }
     }
     return userToRating;

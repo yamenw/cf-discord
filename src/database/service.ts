@@ -57,6 +57,20 @@ async function getUserScores(days_since: number) {
     return data;
 }
 
+async function getUserScoresREST(days_since: number) {
+    const { data, error } = await supabase
+        .rpc('get_user_scores_rest', {
+            days: days_since
+        })
+
+    if (error) {
+        console.error(error);
+        throw error;
+    }
+
+    return data;
+}
+
 export const dbService = {
     insertUser,
     insertSubmissions,
@@ -65,4 +79,5 @@ export const dbService = {
     getSubmissionsByDate,
     getAllUserProfiles,
     getUserScores,
+    getUserScoresREST,
 }
