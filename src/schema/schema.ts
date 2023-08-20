@@ -24,10 +24,6 @@ export const leaderboardData = z.object({
 });
 
 export const dataSchema = z.discriminatedUnion('name', [
-    z.object({
-        options: z.array(z.any()),
-        name: z.literal('hello')
-    }),
     registerData,
     updateData,
     leaderboardData,

@@ -1,15 +1,11 @@
 import { json } from "sift";
 import { InteractionSchema } from "../schema/schema.ts";
-import { hello } from "./hello.ts";
 import { registerUser } from "./register/register.ts";
 import { updateUser } from "./update/update.ts";
 import { leaderboard } from "./leaderboard/leaderboard.ts";
 
 export async function handleCommand(interaction: InteractionSchema): Promise<Response> { // TODO: decouple from sift
     switch (interaction.data.name) {
-        case 'hello':
-            return hello(interaction.data.options)
-
         case 'register':
             return json(await registerUser(interaction.data, interaction.member));
 
