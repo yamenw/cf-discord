@@ -1,23 +1,22 @@
-import { json } from "sift";
 import { InteractionSchema } from "../schema/schema.ts";
 import { registerUser } from "./register/register.ts";
 import { updateUser } from "./update/update.ts";
 import { leaderboard } from "./leaderboard/leaderboard.ts";
+import { IInteractionResponse } from "../types/commands.ts";
 
-export async function handleCommand(interaction: InteractionSchema): Promise<Response> { // TODO: decouple from sift
+export async function handleCommand(interaction: InteractionSchema): Promise<IInteractionResponse> {
     switch (interaction.data.name) {
         case 'register':
-            return json(await registerUser(interaction.data, interaction.member));
+            return await registerUser(interaction.data, interaction.member);
 
         case "update":
-            return json(await updateUser(interaction.member));
+            return await updateUser(interaction.member);
 
         case 'leaderboard':
-            return json(await leaderboard(interaction.data));
+            return await leaderboard(interaction.data);
 
         default: {
-            // deno-lint-ignore no-unused-vars
-            const exhaustiveCheck: never = interaction.data;
+            interaction.data satisfies never;
             throw new Error("Exhaustive check failed in command handler");
         }
     }
