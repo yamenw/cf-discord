@@ -1,14 +1,18 @@
-export function getOption(name: string, data?: { name: string; value: string | number }[]) {
+export function getOption
+    <T, U extends readonly { name: string, value: T }[], V extends U[number]['name']>
+    (name: V, data: U | undefined):
+    Extract<U[number], { name: V }>['value'] | undefined {
+
+    function optionExists(option: U[number]): option is Extract<U[number], { name: V }> {
+        return option.name === name;
+    }
+
     if (!data)
         return undefined;
-    const option = data?.find(
-        (option: { name: string; value: string | number }) => option.name === name
-    )
+    const option = data.find(optionExists);
     if (!option)
         return undefined;
-    // throw new Error(`Missing option: ${name}`);
     return option.value;
 }
 
-//TODO: TS wizardry with generics
 //TODO: make a required version
