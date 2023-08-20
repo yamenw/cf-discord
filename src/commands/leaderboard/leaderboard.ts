@@ -20,6 +20,5 @@ export async function leaderboard(payload: LeaderboardData): Promise<IInteractio
         .map(({ count, score, user_handle }, index) => `#${index}: **${user_handle}**, **${score}** points, **${count}** solved.`)
         .join('\n');
 
-    console.log(rankings);
     return { data: { content: `## Leaderboard in the past ${days_since} days:\n${rankings ? rankings : 'No data.'}` }, type: 4 }
 }
