@@ -22,7 +22,7 @@ export async function updateUser(member: MemberSchema): Promise<IInteractionResp
     return {
         type: 4,
         data: {
-            content: `Updated user ${cf_handle}, found ${prob_count} problem${prob_count === 1 ? '' : 's'}`,
+            content: `Updated user ${cf_handle}, found ${prob_count} submission${prob_count === 1 ? '' : 's'}`,
         },
     }
 }

@@ -18,7 +18,7 @@ export async function registerUser(data: RegisterData, member: MemberSchema): Pr
     try {
         const [profileResult, problemsResult] = await Promise.allSettled([getUserProfile(handle), getProblems(1, handle)]);
         if (problemsResult.status === 'rejected')
-            throw new Error('Failed to fetch problems');
+            throw new Error('Failed to fetch submissions');
         problems = problemsResult.value;
         if (profileResult.status === 'rejected')
             console.error('Could not fetch profile');
@@ -26,7 +26,7 @@ export async function registerUser(data: RegisterData, member: MemberSchema): Pr
             pfp = profileResult.value;
     } catch (error) {
         console.error(error)
-        return { type: 4, data: { content: "Could not retrieve problems from the CF API." } };
+        return { type: 4, data: { content: "Could not retrieve submissions from the CF API." } };
     }
 
     const { error } = await dbService.insertUser({ cf_handle: handle, discord_user_id: member.user.id, profile_picture: pfp });
@@ -41,7 +41,7 @@ export async function registerUser(data: RegisterData, member: MemberSchema): Pr
         res = {
             type: 4,
             data: {
-                content: `Registered CF user "${handle}", found ${problem_count} problems.`,
+                content: `Registered CF user "${handle}", found ${problem_count} submissions.`,
             },
         }
     } catch (error) {
