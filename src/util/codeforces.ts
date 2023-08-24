@@ -28,9 +28,17 @@ export async function getProblems(start: number, handle: string): Promise<unknow
     throw new Error('Incorrect data format');
 }
 
+/**
+ * 
+ * @param handle CF username
+ * @param discord_user_id Discord ID of the account attached to this CF handle
+ * @param problems array of problems from the CF API
+ * @param prob_count current offset for fetching problems
+ * @returns number of problems that have been accepted
+ */
 export async function updateUserSubmissions(handle: string, discord_user_id: string, problems: unknown[], prob_count = 0) {
     const payload = transformData(problems, handle);
-    const [{ error: error1 }, { error: error2 }] = await Promise.all([
+    const [{ error: error1 }, { error: error2 }] = await Promise.all([ // TODO: Replace with RPC
         dbService.updateSubmissionCount(discord_user_id, problems.length + 1 + prob_count),
         dbService.insertSubmissions(payload)
     ])
@@ -42,7 +50,7 @@ export async function updateUserSubmissions(handle: string, discord_user_id: str
         console.error(error2);
         throw error2;
     }
-    return problems.length;
+    return payload.length;
 }
 
 
@@ -53,7 +61,7 @@ export async function updateUserSubmissions(handle: string, discord_user_id: str
  * @returns the problems in parsed correctly for insertion in the database
  */
 export function transformData(data: readonly unknown[], user_handle: string): ISubmissionModel[] {
-    const result: ISubmissionModel[] = []; // TODO: better error handling
+    const result: ISubmissionModel[] = [];
     for (let index = 0; index < data.length; index++)
         try {
             const elem = data[index] as ISubmission;
@@ -66,7 +74,7 @@ export function transformData(data: readonly unknown[], user_handle: string): IS
             const problem_id = `${elem?.problem?.contestId}${elem?.problem?.index}`
             result.push({
                 creation_time: new Date(elem.creationTimeSeconds * 1000).toISOString(),
-                rating: elem.problem.rating,
+                rating: +elem.problem.rating,
                 verdict: elem.verdict,
                 user_handle,
                 problem_id,
@@ -100,11 +108,11 @@ export async function getUserProfile(handle: string): Promise<string | undefined
     let res: { status: string, result: Profile[] };
     try {
         res = await (await fetch(url)).json();
-        if (res.status !== 'OK') {
+        if (res?.status !== 'OK') {
             console.error("CF API returned non-OK status");
             return;
         }
-        return res.result[0].titlePhoto;
+        return res?.result?.[0]?.titlePhoto;
     } catch (error) {
         console.error(error);
         return;
