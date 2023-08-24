@@ -38,17 +38,13 @@ export async function getProblems(start: number, handle: string): Promise<unknow
  */
 export async function updateUserSubmissions(handle: string, discord_user_id: string, problems: unknown[], prob_count = 0) {
     const payload = transformData(problems, handle);
-    const [{ error: error1 }, { error: error2 }] = await Promise.all([ // TODO: Replace with RPC
+    const results = await Promise.all([ // TODO: Replace with RPC, transaction
         dbService.updateSubmissionCount(discord_user_id, problems.length + 1 + prob_count),
         dbService.insertSubmissions(payload)
     ])
-    if (error1) {
-        console.error(error1); // TODO: Refactor this mess
-        throw error1;
-    }
-    if (error2) {
-        console.error(error2);
-        throw error2;
+    for (const { error } of results) {
+        console.error(error);
+        throw error;
     }
     return payload.length;
 }

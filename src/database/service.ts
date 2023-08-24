@@ -7,6 +7,8 @@ async function insertUser(user: Database['public']['Tables']['users']['Insert'])
 }
 
 async function insertSubmissions(submissions: ISubmissionModel[]) {
+    if (!submissions)
+        return { error: null };
     return await supabase.from('submissions').upsert(submissions, { ignoreDuplicates: true });
 }
 
