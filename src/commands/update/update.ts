@@ -22,7 +22,7 @@ export async function updateUser(member: MemberSchema): Promise<IInteractionResp
     return {
         type: 4,
         data: {
-            content: `Updated user ${cf_handle}, \
+            content: `Updated user [${cf_handle}](<https://codeforces.com/profile/${cf_handle}>), \
 registered ${prob_count} problem${prob_count === 1 ? '' : 's'} \
 out of ${submissions.length} submission${submissions.length === 1 ? '' : 's'}`,
         },

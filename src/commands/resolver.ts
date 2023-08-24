@@ -15,9 +15,8 @@ export async function handleCommand(interaction: InteractionSchema): Promise<IIn
         case 'leaderboard':
             return await leaderboard(interaction.data);
 
-        default: {
+        default:
             interaction.data satisfies never;
             throw new Error("Exhaustive check failed in command handler");
-        }
     }
 }
