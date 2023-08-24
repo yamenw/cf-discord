@@ -43,8 +43,10 @@ export async function updateUserSubmissions(handle: string, discord_user_id: str
         dbService.insertSubmissions(payload)
     ])
     for (const { error } of results) {
-        console.error(error);
-        throw error;
+        if (error) {
+            console.error(error);
+            throw error;
+        }
     }
     return payload.length;
 }
