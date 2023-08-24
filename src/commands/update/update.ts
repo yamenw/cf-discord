@@ -15,14 +15,16 @@ export async function updateUser(member: MemberSchema): Promise<IInteractionResp
     if (!cf_handle || !last_fetched)
         return { type: 4, data: { content: "Could not find user in database." } }
 
-    const problems = await getProblems(last_fetched, cf_handle);
+    const submissions = await getProblems(last_fetched, cf_handle);
 
-    const prob_count = await updateUserSubmissions(cf_handle, member.user.id, problems, last_fetched);
+    const prob_count = await updateUserSubmissions(cf_handle, member.user.id, submissions, last_fetched);
     // TODO: if prob count is incremented correctly
     return {
         type: 4,
         data: {
-            content: `Updated user ${cf_handle}, found ${prob_count} submission${prob_count === 1 ? '' : 's'}`,
+            content: `Updated user ${cf_handle}, \
+registered ${prob_count} problem${prob_count === 1 ? '' : 's'} \
+out of ${submissions.length} submission${submissions.length === 1 ? '' : 's'}`,
         },
     }
 }
