@@ -10,7 +10,7 @@ export async function handleCommand(interaction: InteractionSchema): Promise<IIn
             return await registerUser(interaction.data, interaction.member);
 
         case "update":
-            return await updateUser(interaction.member);
+            return await updateUser(interaction.member, interaction.data);
 
         case 'leaderboard':
             return await leaderboard(interaction.data);

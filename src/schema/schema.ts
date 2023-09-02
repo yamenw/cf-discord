@@ -11,6 +11,25 @@ const registerData = z.object({
 
 export const updateData = z.object({
     name: z.literal('update'),
+    options: z.optional(z.array(
+        z.discriminatedUnion('name', [
+            z.object({
+                type: z.literal(3),
+                name: z.literal("set_nickname"),
+                value: z.string().min(1).max(32),
+            }),
+            z.object({
+                type: z.literal(4),
+                name: z.literal("refetch_last"),
+                value: z.union([
+                    z.literal(25),
+                    z.literal(50),
+                    z.literal(100),
+                    z.literal(250),
+                ]),
+            }),
+        ]
+        ))),
 });
 
 export const leaderboardData = z.object({
@@ -43,6 +62,7 @@ export const interactionSchema = z.object({
 })
 
 export type LeaderboardData = z.infer<typeof leaderboardData>;
+export type UpdateData = z.infer<typeof updateData>;
 export type RegisterData = z.infer<typeof registerData>;
 export type DataSchema = z.infer<typeof dataSchema>;
 export type MemberSchema = z.infer<typeof memberSchema>;
