@@ -27,7 +27,6 @@ export interface Database {
       submissions: {
         Row: {
           creation_time: string
-          id: number
           problem_id: string
           rating: number
           user_handle: string
@@ -35,7 +34,6 @@ export interface Database {
         }
         Insert: {
           creation_time: string
-          id?: never
           problem_id: string
           rating: number
           user_handle: string
@@ -43,7 +41,6 @@ export interface Database {
         }
         Update: {
           creation_time?: string
-          id?: never
           problem_id?: string
           rating?: number
           user_handle?: string
@@ -65,6 +62,7 @@ export interface Database {
           id: number
           inserted_at: string
           last_fetched: number | null
+          nickname: string | null
           profile_picture: string | null
           updated_at: string
         }
@@ -74,6 +72,7 @@ export interface Database {
           id?: number
           inserted_at?: string
           last_fetched?: number | null
+          nickname?: string | null
           profile_picture?: string | null
           updated_at?: string
         }
@@ -83,6 +82,7 @@ export interface Database {
           id?: number
           inserted_at?: string
           last_fetched?: number | null
+          nickname?: string | null
           profile_picture?: string | null
           updated_at?: string
         }
@@ -114,12 +114,34 @@ export interface Database {
           pfp: string
         }[]
       }
+      insert_submission_models:
+        | {
+            Args: {
+              new_submissions: Database["public"]["CompositeTypes"]["isubmissionmodel"][]
+            }
+            Returns: undefined
+          }
+        | {
+            Args: {
+              new_submissions: Database["public"]["CompositeTypes"]["isubmissionmodel"][]
+              cf_handle: string
+              sub_count: number
+              user_id: string
+            }
+            Returns: undefined
+          }
     }
     Enums: {
-      [_ in never]: never
+      verdictenum: "WRONG_ANSWER" | "OK"
     }
     CompositeTypes: {
-      [_ in never]: never
+      isubmissionmodel: {
+        rating: number
+        creation_time: string
+        verdict: Database["public"]["Enums"]["verdictenum"]
+        user_handle: string
+        problem_id: string
+      }
     }
   }
 }

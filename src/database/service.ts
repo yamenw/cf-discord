@@ -59,6 +59,23 @@ async function getUserScores(days_since: number) {
     return data;
 }
 
+async function insertProblems(new_submissions: ISubmissionModel[], user_id: string, sub_count: number, cf_handle: string) {
+    const { data, error } = await supabase
+        .rpc('insert_submission_models', {
+            cf_handle,
+            new_submissions,
+            sub_count,
+            user_id,
+        })
+
+    if (error) {
+        console.error(error);
+        throw error;
+    }
+
+    return data;
+}
+
 async function getUserScoresREST(days_since: number) {
     const { data, error } = await supabase
         .rpc('get_user_scores_rest', {
@@ -82,4 +99,5 @@ export const dbService = {
     getAllUserProfiles,
     getUserScores,
     getUserScoresREST,
+    insertProblems,
 }
