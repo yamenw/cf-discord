@@ -2,6 +2,7 @@ import { dbService } from "../../database/service.ts";
 import { getOption } from "../../helper/get-option.ts";
 import { MemberSchema, UpdateData } from "../../schema/schema.ts";
 import { IInteractionResponse } from "../../types/commands.ts";
+import { MESSAGES } from "../../types/constants.ts";
 import { getProblems, updateUserSubmissions } from "../../util/codeforces.ts";
 
 export async function updateUser(member: MemberSchema, payload: UpdateData): Promise<IInteractionResponse> {
@@ -9,12 +10,12 @@ export async function updateUser(member: MemberSchema, payload: UpdateData): Pro
     if (error)
         return { type: 4, data: { content: "Something went wrong while retrieving user from database" } }
     if (data === null || !(data?.[0]))
-        return { type: 4, data: { content: "Could not find user in database." } }
+        return { type: 4, data: { content: MESSAGES.USER_NOT_FOUND } }
 
     const { cf_handle, last_fetched } = data[0];
 
     if (!cf_handle || !last_fetched)
-        return { type: 4, data: { content: "Could not find user in database." } }
+        return { type: 4, data: { content: MESSAGES.USER_NOT_FOUND } }
 
     const refetch = getOption('refetch_last', payload?.options) ?? 0;
     const offset = Math.max(last_fetched - refetch, 0);
