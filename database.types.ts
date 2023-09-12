@@ -28,25 +28,31 @@ export interface Database {
         Row: {
           creation_time: string
           problem_id: string
-          rating: number
+          rating: number | null
           user_handle: string
           verdict: string
         }
         Insert: {
           creation_time: string
           problem_id: string
-          rating: number
+          rating?: number | null
           user_handle: string
           verdict: string
         }
         Update: {
           creation_time?: string
           problem_id?: string
-          rating?: number
+          rating?: number | null
           user_handle?: string
           verdict?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "submissions_rating_fkey"
+            columns: ["rating"]
+            referencedRelation: "scores"
+            referencedColumns: ["cf_rating"]
+          },
           {
             foreignKeyName: "submissions_user_handle_fkey"
             columns: ["user_handle"]

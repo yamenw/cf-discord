@@ -90,6 +90,8 @@ async function getUserScoresREST(days_since: number) {
     return data;
 }
 
+
+
 export const dbService = {
     insertUser,
     insertSubmissions,
@@ -100,4 +102,7 @@ export const dbService = {
     getUserScores,
     getUserScoresREST,
     insertProblems,
+    CONTSTANTS: {
+        UNRATED_PLACEHOLDER: -1
+    } as const,
 }

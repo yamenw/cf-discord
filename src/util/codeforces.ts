@@ -54,8 +54,6 @@ export function transformData(data: readonly unknown[], user_handle: string): IS
     for (let index = 0; index < data.length; index++)
         try {
             const elem = data[index] as ISubmission;
-            if (!(elem?.problem?.rating))
-                continue;
             if (elem?.verdict !== 'OK')
                 continue;
             if (!(elem?.problem?.contestId && elem?.problem?.index))
@@ -63,7 +61,7 @@ export function transformData(data: readonly unknown[], user_handle: string): IS
             const problem_id = `${elem?.problem?.contestId}${elem?.problem?.index}`
             result.push({
                 creation_time: new Date(elem.creationTimeSeconds * 1000).toISOString(),
-                rating: +elem.problem.rating,
+                rating: elem?.problem?.rating ?? dbService.CONTSTANTS.UNRATED_PLACEHOLDER,
                 verdict: elem.verdict,
                 user_handle,
                 problem_id,
