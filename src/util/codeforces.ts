@@ -9,8 +9,10 @@ export async function getProblems(start: number, handle: string): Promise<unknow
     let data: unknown;
     try {
         const res = await fetch(url);
-        if (!res.ok || res.status !== 200)
+        if (!res.ok || res.status !== 200) {
+            console.error(res);
             throw new Error('Could not fetch data');
+        }
         data = await res.json();
         if (!(data && typeof data === 'object' && 'status' in data && 'result' in data && Array.isArray(data.result)))
             throw new Error('Incorrect data format');
