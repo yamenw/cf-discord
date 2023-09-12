@@ -18,7 +18,13 @@ export async function updateUser(member: MemberSchema, payload: UpdateData): Pro
 
     const refetch = getOption('refetch_last', payload?.options) ?? 0;
     const offset = Math.max(last_fetched - refetch, 0);
-    const submissions = await getProblems(offset, cf_handle);
+    let submissions: unknown[];
+    try {
+        submissions = await getProblems(offset, cf_handle);
+    } catch (error) {
+        console.error(error);
+        return { type: 4, data: { content: "Error occured while querying CF API." } }
+    }
 
     const prob_count = await updateUserSubmissions(cf_handle, member.user.id, submissions, offset);
     // TODO: if prob count is incremented correctly
