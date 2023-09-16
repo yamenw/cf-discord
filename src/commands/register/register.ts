@@ -14,7 +14,7 @@ export async function registerUser(data: RegisterData, member: MemberSchema): Pr
     let problem_count: number;
     let res: IInteractionResponse;
     let problems: unknown[];
-    let pfp: string | undefined = undefined;
+    let pfp: string | null = null;
     try {
         const [profileResult, problemsResult] = await Promise.allSettled([getUserProfile(handle), getProblems(1, handle)]);
         if (problemsResult.status === 'rejected')
