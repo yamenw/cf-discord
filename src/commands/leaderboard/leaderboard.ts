@@ -1,6 +1,6 @@
 import { dbService } from "../../database/service.ts";
 import { getOption } from "../../helper/get-option.ts";
-import { LeaderboardData } from "../../schema/schema.ts";
+import { LeaderboardDataSchema } from "../../schema/schema.ts";
 import { IInteractionResponse } from "../../types/commands.ts";
 
 type User = Awaited<ReturnType<typeof dbService['getUserScores']>>[number];
@@ -10,7 +10,7 @@ function formatRow({ count, score, user_handle }: User) {
     return `**${name}**, **${score}** points, **${count}** solved.`
 }
 
-export async function leaderboard(payload: LeaderboardData): Promise<IInteractionResponse> {
+export async function leaderboard(payload: LeaderboardDataSchema): Promise<IInteractionResponse> {
     let days_since = +(getOption('days_since', payload.options) ?? 30);
     if (!days_since || isNaN(days_since))
         days_since = 30;

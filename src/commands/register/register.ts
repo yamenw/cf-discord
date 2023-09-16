@@ -1,9 +1,9 @@
-import { MemberSchema, RegisterData } from "../../schema/schema.ts";
+import { MemberSchema, RegisterDataSchema } from "../../schema/schema.ts";
 import { IInteractionResponse } from "../../types/commands.ts";
 import { getProblems, getUserProfile, updateUserSubmissions } from "../../util/codeforces.ts";
 import { dbService } from "../../database/service.ts";
 
-export async function registerUser(data: RegisterData, member: MemberSchema): Promise<IInteractionResponse> {
+export async function registerUser(data: RegisterDataSchema, member: MemberSchema): Promise<IInteractionResponse> {
     const handleOption = data?.options?.find(
         (option: { name: string; value: string }) => option.name === 'handle'
     )

@@ -1,11 +1,11 @@
 import { dbService } from "../../database/service.ts";
 import { getOption } from "../../helper/get-option.ts";
-import { MemberSchema, UpdateData } from "../../schema/schema.ts";
+import { MemberSchema, UpdateDataSchmea } from "../../schema/schema.ts";
 import { IInteractionResponse } from "../../types/commands.ts";
 import { MESSAGES } from "../../types/constants.ts";
 import { getProblems, updateUserSubmissions } from "../../util/codeforces.ts";
 
-export async function updateUser(member: MemberSchema, payload: UpdateData): Promise<IInteractionResponse> {
+export async function updateUser(member: MemberSchema, payload: UpdateDataSchmea): Promise<IInteractionResponse> {
     const { data, error } = await dbService.getUserProfile(member.user.id);
     if (error)
         return { type: 4, data: { content: "Something went wrong while retrieving user from database" } }

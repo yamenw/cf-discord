@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const registerData = z.object({
+const registerDataSchema = z.object({
     options: z.array(z.object({
         type: z.literal(3),
         name: z.literal("handle"),
@@ -9,7 +9,7 @@ const registerData = z.object({
     name: z.literal('register')
 })
 
-export const updateData = z.object({
+export const updateDataSchema = z.object({
     name: z.literal('update'),
     options: z.optional(z.array(
         z.discriminatedUnion('name', [
@@ -32,7 +32,7 @@ export const updateData = z.object({
         ))),
 });
 
-export const leaderboardData = z.object({
+export const leaderboardDataSchema = z.object({
     options: z.optional(z.array(
         z.object({
             type: z.literal(4),
@@ -43,9 +43,9 @@ export const leaderboardData = z.object({
 });
 
 export const dataSchema = z.discriminatedUnion('name', [
-    registerData,
-    updateData,
-    leaderboardData,
+    registerDataSchema,
+    updateDataSchema,
+    leaderboardDataSchema,
 ])
 
 export const memberSchema = z.object({
@@ -61,10 +61,9 @@ export const interactionSchema = z.object({
     member: memberSchema,
 })
 
-export type LeaderboardData = z.infer<typeof leaderboardData>;
-export type UpdateData = z.infer<typeof updateData>;
-export type RegisterData = z.infer<typeof registerData>;
-export type DataSchema = z.infer<typeof dataSchema>;
+export type LeaderboardDataSchema = z.infer<typeof leaderboardDataSchema>;
+export type UpdateDataSchmea = z.infer<typeof updateDataSchema>;
+export type RegisterDataSchema = z.infer<typeof registerDataSchema>;
+export type CommandDataSchema = z.infer<typeof dataSchema>;
 export type MemberSchema = z.infer<typeof memberSchema>;
 export type InteractionSchema = z.infer<typeof interactionSchema>;
-// TODO: rename all this
