@@ -27,14 +27,25 @@ export async function updateUser(member: MemberSchema, payload: UpdateDataSchmea
         return { type: 4, data: { content: "Error occured while querying CF API." } }
     }
 
-    const prob_count = await updateUserSubmissions(cf_handle, member.user.id, submissions, offset);
+    const insertedProblems = await updateUserSubmissions(cf_handle, member.user.id, submissions, offset);
+    const probCount = insertedProblems.payload.length;
+    const CFAPI = 'https://codeforces.com/'; // TODO: better string templating
+    let message: string;
+    if (probCount > 0) {
+        const problemIds = insertedProblems.payload
+            .slice(0, 10)
+            .map(({ problem_id: pid }) => `[${pid}](<${CFAPI}contest/${pid.slice(0, -1)}/problem/${pid.slice(-1)}>)`)
+            .join(', ');
+        message = `registered ${probCount} problem${probCount === 1 ? '' : 's'}\
+out of ${submissions.length} submission${submissions.length === 1 ? '' : 's'}: ${problemIds}`;
+    } else {
+        message = 'found no new solved problems.'
+    }
     // TODO: if prob count is incremented correctly
     return {
         type: 4,
         data: {
-            content: `Updated user [${cf_handle}](<https://codeforces.com/profile/${cf_handle}>), \
-registered ${prob_count} problem${prob_count === 1 ? '' : 's'} \
-out of ${submissions.length} submission${submissions.length === 1 ? '' : 's'}`,
+            content: `Updated user [${cf_handle}](<${CFAPI}/profile/${cf_handle}>), ${message}`,
         },
     }
 }

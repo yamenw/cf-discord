@@ -36,12 +36,12 @@ export async function getProblems(start: number, handle: string): Promise<unknow
  * @param discord_user_id Discord ID of the account attached to this CF handle
  * @param problems array of problems from the CF API
  * @param prob_count current offset for fetching problems
- * @returns number of problems that have been accepted
+ * @returns the submissions that were inserted.
  */
 export async function updateUserSubmissions(handle: string, discord_user_id: string, problems: unknown[], prob_count = 0) {
     const payload = transformData(problems, handle);
     await dbService.insertProblems(payload, discord_user_id, problems.length + 1 + prob_count, handle);
-    return payload.length;
+    return { payload } as const;
 }
 
 
