@@ -1,11 +1,12 @@
+import { Offsets } from "../commands/update/update.ts";
 import { dbService } from "../database/service.ts";
 import { ISubmission, ISubmissionModel } from "../types/codeforces.ts";
 
-export async function getProblems(start: number, handle: string): Promise<unknown[]> {
+export async function getProblems(offsets: Offsets, handle: string): Promise<unknown[]> {
     const url = new URL('https://codeforces.com/api/user.status')
-    url.searchParams.append('count', '9999');
+    url.searchParams.append('count', offsets.count);
     url.searchParams.append('handle', handle);
-    url.searchParams.append('from', `${start}`);
+    url.searchParams.append('from', offsets.startFromCFAPI);
     let data: unknown;
     try {
         const res = await fetch(url);
@@ -38,9 +39,9 @@ export async function getProblems(start: number, handle: string): Promise<unknow
  * @param prob_count current offset for fetching problems
  * @returns the submissions that were inserted.
  */
-export async function updateUserSubmissions(handle: string, discord_user_id: string, problems: unknown[], prob_count = 0) {
+export async function updateUserSubmissions(handle: string, discord_user_id: string, problems: unknown[], offsets: Offsets) {
     const payload = transformData(problems, handle);
-    await dbService.insertProblems(payload, discord_user_id, problems.length + 1 + prob_count, handle);
+    await dbService.insertProblems(payload, discord_user_id, offsets.calcUsersLastFetchedOffset(problems.length), handle);
     return { payload } as const;
 }
 
