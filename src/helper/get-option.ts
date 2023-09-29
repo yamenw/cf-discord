@@ -14,5 +14,3 @@ export function getOption
         return undefined;
     return option.value;
 }
-
-//TODO: make a required version
