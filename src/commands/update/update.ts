@@ -17,15 +17,24 @@ export class Offsets {
     readonly startFromCFAPI: `${number}`;
     private readonly offset: number;
     readonly count = '9999';
+    readonly refetch: number;
     constructor(last_fetched: number, payload: UpdateDataSchmea) {
-        const refetch = getOption('refetch_last', payload?.options) ?? 0;
+        this.refetch = getOption('refetch_last', payload?.options) ?? 0;
 
-        this.offset = Math.max(last_fetched - refetch, 0);
+        this.offset = Math.max(last_fetched - this.refetch, 0);
         this.startFromCFAPI = `${Math.max(this.offset, 1)}`;
     }
 
     calcUsersLastFetchedOffset(problemsCount: number) {
         return problemsCount + 1 + this.offset
+    }
+
+    getParamsFromStart(handle: string) {
+        return new URLSearchParams({
+            'count': Math.max(25, this.refetch).toString(),
+            'handle': handle,
+            'from': '1',
+        })
     }
 }
 
@@ -71,7 +80,6 @@ export async function updateUser(member: MemberSchema, payload: UpdateDataSchmea
     const insertedProblems = await updateUserSubmissions(cf_handle, member.user.id, submissions, offsets);
     const message = formateUpdateMessage(submissions.length, insertedProblems.payload);
 
-    // TODO: if prob count is incremented correctly
     return {
         type: 4,
         data: {

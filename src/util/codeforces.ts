@@ -3,10 +3,7 @@ import { dbService } from "../database/service.ts";
 import { ISubmission, ISubmissionModel } from "../types/codeforces.ts";
 
 export async function getProblems(offsets: Offsets, handle: string): Promise<unknown[]> {
-    const url = new URL('https://codeforces.com/api/user.status')
-    url.searchParams.append('count', offsets.count);
-    url.searchParams.append('handle', handle);
-    url.searchParams.append('from', offsets.startFromCFAPI);
+    const url = `https://codeforces.com/api/user.status?${offsets.getParamsFromStart(handle)}`;
     let data: unknown;
     try {
         const res = await fetch(url);
@@ -22,8 +19,7 @@ export async function getProblems(offsets: Offsets, handle: string): Promise<unk
             throw new Error('Codeforces returned non-OK status');
         }
     } catch (error) {
-        console.error(error)
-        throw new Error('Could not retrieve problems from the CF API.');
+        throw new Error('Could not retrieve problems from the CF API.', { cause: error });
     }
     const { result } = data;
     if (Array.isArray(result))
