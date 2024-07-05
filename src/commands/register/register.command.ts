@@ -1,4 +1,4 @@
-{
+export const registerCommandDefinition = {
     "name": "register",
     "description": "Assign a Codeforces handle to yourself",
     "options": [
@@ -11,4 +11,4 @@
             "max_length": 32
         }
     ]
-}
+} as const;

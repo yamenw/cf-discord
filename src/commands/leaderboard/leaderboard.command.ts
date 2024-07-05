@@ -1,4 +1,4 @@
-{
+export const leaderboardCommandDefinition = {
     "name": "leaderboard",
     "description": "Show the leaderboard (top 15 users)",
     "options": [
@@ -11,4 +11,4 @@
             "max": 365
         }
     ]
-}
+} as const;
