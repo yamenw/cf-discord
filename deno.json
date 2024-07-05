@@ -1,0 +1,5 @@
+{
+    "tasks": {
+        "tsc": "deno check .\\src\\home.ts --import-map=supabase\\functions\\import_map.json"
+    }
+}

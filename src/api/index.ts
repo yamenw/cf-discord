@@ -1,7 +1,7 @@
 import { getRankings } from "./get-ranks.ts";
 
 
-export async function resolveREST(req: Request): Promise<Response> {
+export async function resolveREST(_req: Request): Promise<Response> {
     const res = await getRankings();
     res.headers.append('Access-Control-Allow-Origin', '*');
     res.headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE');
