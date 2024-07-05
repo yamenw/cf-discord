@@ -1,5 +1,6 @@
 {
     "tasks": {
-        "tsc": "deno check .\\src\\home.ts --import-map=supabase\\functions\\import_map.json"
+        "tsc": "deno check ./src/home.ts --import-map=supabase/functions/import_map.json",
+        "submit": "deno run --allow-read --allow-net scripts/submit-commands.ts"
     }
 }

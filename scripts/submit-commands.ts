@@ -1,5 +1,5 @@
 import { load } from "https://deno.land/std@0.224.0/dotenv/mod.ts";
-import { allCommandsSchemas } from "../src/commands/all-commands.schema.ts";
+import { allCommandsSchemas } from "../src/commands/all-commands.command.ts";
 
 async function submitAllCommands() {
     const env = await load({ envPath: '.env.secret' });
