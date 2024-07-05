@@ -1,7 +1,7 @@
 import nacl from 'nacl';
 import * as sift from 'sift';
 import { DiscordCommandType } from './types/commands.ts';
-import { interactionSchema } from './schema/schema.ts';
+import { interactionSchema, validateInteractionSchema } from './schema/schema.ts';
 import { handleCommand } from './commands/resolver.ts';
 
 export class BotInstance {
@@ -22,23 +22,21 @@ export class BotInstance {
 
         const { valid, body } = await this.verifySignature(request)
         if (!valid) {
-            return sift.json(
-                { error: 'Invalid request' },
-                {
-                    status: 401,
-                }
-            )
+            return sift.json({ error: 'Invalid request' }, { status: 401 })
         }
 
-        const interaction = interactionSchema.parse(JSON.parse(body))
+        const interaction = validateInteractionSchema.parse(JSON.parse(body))
         switch (interaction.type) {
             case DiscordCommandType.Ping:
-                return sift.json({
-                    type: 1,
-                })
+                return sift.json({ type: 1 })
 
-            case DiscordCommandType.ApplicationCommand:
-                return sift.json(await handleCommand(interaction));
+            case DiscordCommandType.ApplicationCommand: {
+                const interactionWithData = interactionSchema.safeParse(interaction);
+                if (interactionWithData.success)
+                    return sift.json(await handleCommand(interactionWithData.data));
+                else
+                    return sift.json({ status: 200 })
+            }
 
             default:
                 return sift.json({ error: 'ETYPEZERO: bad request' }, { status: 400 })

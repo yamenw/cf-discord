@@ -8,8 +8,8 @@
 import * as sift from 'sift';
 import { BotInstance } from '../../../src/home.ts';
 
-const bot = new BotInstance(Deno.env.get('DISCORD_PUBLIC_KEY')!);
+const bot = new BotInstance(Deno.env.get('DISCORD_BOT_DEV_PUBKEY')!);
 
 sift.serve({
-  '/discord-bot-fr': bot.home,
+  '/discord-bot-dev': bot.home,
 })

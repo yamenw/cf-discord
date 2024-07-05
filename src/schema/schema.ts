@@ -61,6 +61,20 @@ export const interactionSchema = z.object({
     member: memberSchema,
 })
 
+/**
+ * This is for the discord error:
+ * alidation errors:
+ * interactions_endpoint_url: The specified interactions endpoint url could not be verified.
+ * 
+ * Discord will try to validate the interactions endpoint
+ * For that, it will send a request with no data or member info
+ */
+export const validateInteractionSchema = z.object({
+    type: z.number().min(1).max(3).int(),
+    data: z.optional(dataSchema),
+    member: z.optional(memberSchema),
+})
+
 export type LeaderboardDataSchema = z.infer<typeof leaderboardDataSchema>;
 export type UpdateDataSchmea = z.infer<typeof updateDataSchema>;
 export type RegisterDataSchema = z.infer<typeof registerDataSchema>;
