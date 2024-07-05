@@ -4,7 +4,7 @@
   "description": "Discord bot on supabase FaaS",
   "main": "index.js",
   "devDependencies": {
-    "supabase": "^1.68.6"
+    "supabase": "^1.178.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
