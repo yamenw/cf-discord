@@ -1,5 +1,5 @@
 import { createClient } from 'supabase-js';
-import { Database } from '../../database.types.ts';
+import { Database } from "../database.types.ts";
 
 const url = Deno.env.get('SUPABASE_URL');
 const token = Deno.env.get('SUPABASE_ANON_KEY');

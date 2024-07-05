@@ -1,6 +1,7 @@
 {
     "tasks": {
-        "tsc": "deno check ./src/home.ts --import-map=supabase/functions/import_map.json",
-        "submit": "deno run --allow-read --allow-net scripts/submit-commands.ts"
+        "tsc": "deno check ./supabase/functions/_shared/home.ts --import-map=supabase/functions/import_map.json",
+        "submit": "deno run --allow-read --allow-net scripts/submit-commands.ts",
+        "deploy-dev": "npx supabase functions deploy discord-bot-dev --no-verify-jwt"
     }
 }
