@@ -18,7 +18,12 @@ export class Offsets {
     private readonly offset: number;
     readonly count = '9999';
     readonly refetch: number;
-    constructor(last_fetched: number, payload: UpdateDataSchmea) {
+    /**
+     * 
+     * @param last_fetched the index of the last fetched problem, enter a negative number to refetch all
+     * @param payload
+     */
+    constructor(last_fetched: number, payload?: UpdateDataSchmea) {
         this.refetch = getOption('refetch_last', payload?.options) ?? 0;
 
         this.offset = Math.max(last_fetched - this.refetch, 0);

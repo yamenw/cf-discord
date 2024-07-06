@@ -2,6 +2,7 @@ import { MemberSchema, RegisterDataSchema } from "../../schema/schema.ts";
 import { IInteractionResponse } from "../../types/commands.ts";
 import { getProblems, getUserProfile, updateUserSubmissions } from "../../util/codeforces.ts";
 import { dbService } from "../../database/service.ts";
+import { Offsets } from "../update/update.ts";
 
 export async function registerUser(data: RegisterDataSchema, member: MemberSchema): Promise<IInteractionResponse> {
     const handleOption = data?.options?.find(
@@ -11,14 +12,14 @@ export async function registerUser(data: RegisterDataSchema, member: MemberSchem
         throw new Error("Missing handle");
 
     const { value: handle } = handleOption;
-    let problem_count: number;
     let res: IInteractionResponse;
     let problems: unknown[];
     let pfp: string | null = null;
     try {
-        const [profileResult, problemsResult] = await Promise.allSettled([getUserProfile(handle), getProblems(1, handle)]);
-        if (problemsResult.status === 'rejected')
-            throw new Error('Failed to fetch submissions');
+        const [profileResult, problemsResult] = await Promise.allSettled([getUserProfile(handle), getProblems(new Offsets(-1), handle)]);
+        if (problemsResult.status === 'rejected') {
+            throw new Error('Failed to fetch submissions', { cause: problemsResult.reason });
+        }
         problems = problemsResult.value;
         if (profileResult.status === 'rejected')
             console.error('Could not fetch profile');
@@ -36,8 +37,10 @@ export async function registerUser(data: RegisterDataSchema, member: MemberSchem
         return { type: 4, data: { content: "Database error: Duplicate found" } };
 
 
+    let problem_count: number;
     try {
-        problem_count = await updateUserSubmissions(handle, member.user.id, problems);
+        const subbedProblems = await updateUserSubmissions(handle, member.user.id, problems);
+        problem_count = subbedProblems.payload.length;
         res = {
             type: 4,
             data: {

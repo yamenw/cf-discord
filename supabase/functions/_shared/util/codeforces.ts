@@ -32,12 +32,17 @@ export async function getProblems(offsets: Offsets, handle: string): Promise<unk
  * @param handle CF username
  * @param discord_user_id Discord ID of the account attached to this CF handle
  * @param problems array of problems from the CF API
- * @param prob_count current offset for fetching problems
  * @returns the submissions that were inserted.
  */
-export async function updateUserSubmissions(handle: string, discord_user_id: string, problems: unknown[], offsets: Offsets) {
+export async function updateUserSubmissions(
+    handle: string,
+    discord_user_id: string,
+    problems: unknown[],
+    offsets: Offsets = new Offsets(-1)
+) {
     const payload = transformData(problems, handle);
-    await dbService.insertProblems(payload, discord_user_id, offsets.calcUsersLastFetchedOffset(problems.length), handle);
+    const subCount = offsets.calcUsersLastFetchedOffset(problems.length);
+    await dbService.insertProblems(payload, discord_user_id, subCount, handle);
     return { payload } as const;
 }
 
