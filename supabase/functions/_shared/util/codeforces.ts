@@ -1,12 +1,11 @@
-import { Offsets } from "../commands/update/update.ts";
+import { Offsets } from "../common/offsets.ts";
 import { dbService } from "../database/service.ts";
 import { ISubmission, ISubmissionModel } from "../types/codeforces.ts";
 
 export async function getProblems(offsets: Offsets, handle: string): Promise<unknown[]> {
-    const url = `https://codeforces.com/api/user.status?${offsets.getParamsFromStart(handle)}`;
     let data: unknown;
     try {
-        const res = await fetch(url);
+        const res = await fetch(offsets.getURL(handle));
         if (!res.ok || res.status !== 200) {
             console.error(res);
             throw new Error('Could not fetch data');

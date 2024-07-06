@@ -1,8 +1,8 @@
+import { Offsets } from "../../common/offsets.ts";
+import { dbService } from "../../database/service.ts";
 import { MemberSchema, RegisterDataSchema } from "../../schema/schema.ts";
 import { IInteractionResponse } from "../../types/commands.ts";
 import { getProblems, getUserProfile, updateUserSubmissions } from "../../util/codeforces.ts";
-import { dbService } from "../../database/service.ts";
-import { Offsets } from "../update/update.ts";
 
 export async function registerUser(data: RegisterDataSchema, member: MemberSchema): Promise<IInteractionResponse> {
     const handleOption = data?.options?.find(
