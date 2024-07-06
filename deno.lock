@@ -98,9 +98,6 @@
       }
     }
   },
-  "redirects": {
-    "https://esm.sh/@supabase/supabase-js@2": "https://esm.sh/@supabase/supabase-js@2.26.0"
-  },
   "remote": {
     "https://cdn.skypack.dev/http-cache-semantics?dts": "351196d5e6d6b0cd41d8cfcc73f9a741532c8ac5ff1686a2c86d554a2a3dc993",
     "https://cdn.skypack.dev/tweetnacl@v1.0.3?dts": "6610aad2ac175c2d575995fc7de8ed552c2e5e05aef80ed8588cf3c6e2db61d7",
@@ -146,7 +143,6 @@
     "https://deno.land/x/zod@v3.21.4/locales/en.ts": "a7a25cd23563ccb5e0eed214d9b31846305ddbcdb9c5c8f508b108943366ab4c",
     "https://deno.land/x/zod@v3.21.4/mod.ts": "64e55237cb4410e17d968cd08975566059f27638ebb0b86048031b987ba251c4",
     "https://deno.land/x/zod@v3.21.4/types.ts": "b5d061babea250de14fc63764df5b3afa24f2b088a1d797fc060ba49a0ddff28",
-    "https://esm.sh/@supabase/supabase-js@2.26.0": "571e0bc862e6344ede6d55dcf8d755683074072820e9be0645f325a2ba21e376",
     "https://esm.sh/preact-render-to-string@5.2.4?target=deno": "ef7e2248f5ccacaf834fa12aa2f6c40f7f3374355c251666d1ed272a7773b3d3",
     "https://esm.sh/preact@10.10.6?target=deno": "1e29f08f3e8ad648c83062cbb69e040235a18441c8b2e58aac3d82b39393bba2"
   },
