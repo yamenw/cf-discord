@@ -10,9 +10,7 @@ export class Offsets {
      * 
      * Cannot be non-positive.
      */
-    readonly startFromCFAPI: `${number}`;
     private readonly offset: number;
-    readonly count = '9999';
     readonly refetch: number;
     /**
      * 
@@ -23,7 +21,6 @@ export class Offsets {
         this.refetch = getOption('refetch_last', payload?.options) ?? 0;
 
         this.offset = Math.max(last_fetched - this.refetch, 0);
-        this.startFromCFAPI = `${Math.max(this.offset, 1)}`;
     }
 
     calcUsersLastFetchedOffset = (problemsCount: number) => {
