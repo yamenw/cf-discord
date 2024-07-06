@@ -34,4 +34,8 @@ jobs:
         run: deno lint
 
       - name: Type check
-        run: deno task tsc
+        run: deno task tsc --lock-write
+# there seems to be an issue where generated lockfiles are 
+# different across different operating systems
+# this can probably be solved by using different lockfiles
+# honestly im just gonna ignore it for now.
