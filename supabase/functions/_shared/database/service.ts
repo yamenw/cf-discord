@@ -1,4 +1,5 @@
-import { Database } from "../../database.types.ts"
+
+import { Database } from "../database.types.ts";
 import { ISubmissionModel } from "../types/codeforces.ts";
 import { supabase } from "./db.ts"
 
