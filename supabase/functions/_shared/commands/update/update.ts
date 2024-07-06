@@ -88,7 +88,7 @@ export async function updateUser(member: MemberSchema, payload: UpdateDataSchmea
     return {
         type: 4,
         data: {
-            content: `Updated user [${cf_handle}](<${CFAPI}/profile/${cf_handle}>), ${message}`,
+            content: `Updated user [\`${cf_handle}\`](<${CFAPI}/profile/${cf_handle}>), ${message}`,
         },
     }
 }
