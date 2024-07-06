@@ -6,7 +6,7 @@ import { IInteractionResponse } from "../../types/commands.ts";
 type User = Awaited<ReturnType<typeof dbService['getUserScores']>>[number];
 
 function formatRow({ count, score, user_handle }: User) {
-    const name = `[${user_handle}](<https://codeforces.com/profile/${user_handle}>)`;
+    const name = `[\`${user_handle}\`](<https://codeforces.com/profile/${user_handle}>)`;
     return `**${name}**, **${score}** points, **${count}** solved.`
 }
 
