@@ -2,7 +2,7 @@
     "imports": {
         "sift": "https://deno.land/x/sift@0.6.0/mod.ts",
         "nacl": "https://cdn.skypack.dev/tweetnacl@v1.0.3?dts",
-        "supabase-js": "https://esm.sh/@supabase/supabase-js@2",
+        "supabase-js": "jsr:@supabase/supabase-js@2",
         "zod": "https://deno.land/x/zod@v3.21.4/mod.ts",
         "http": "https://deno.land/std@0.168.0/http/server.ts"
     }

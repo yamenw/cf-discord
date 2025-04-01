@@ -42,10 +42,16 @@ export const leaderboardDataSchema = z.object({
     name: z.literal('leaderboard'),
 });
 
+const deleteDataSchema = z.object({
+    options: z.optional(z.array(z.object({}))),
+    name: z.literal('delete'),
+});
+
 export const dataSchema = z.discriminatedUnion('name', [
     registerDataSchema,
     updateDataSchema,
     leaderboardDataSchema,
+    deleteDataSchema,
 ])
 
 export const memberSchema = z.object({
