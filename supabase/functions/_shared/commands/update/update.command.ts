@@ -1,3 +1,5 @@
+import { CommandDefinition } from "../../types/commands.ts";
+
 export const updateCommandDefinition = {
     name: "update",
     description: "Update your problemlist based on your handle",
@@ -35,4 +37,4 @@ export const updateCommandDefinition = {
             ]
         }
     ]
-} as const;
+} as const satisfies CommandDefinition;
