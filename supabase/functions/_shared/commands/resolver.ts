@@ -3,6 +3,7 @@ import { registerUser } from "./register/register.ts";
 import { updateUser } from "./update/update.ts";
 import { leaderboard } from "./leaderboard/leaderboard.ts";
 import { IInteractionResponse } from "../types/commands.ts";
+import { deleteUser } from "./delete/delete.ts";
 
 export async function handleCommand(interaction: InteractionSchema): Promise<IInteractionResponse> {
     switch (interaction.data.name) {
@@ -14,6 +15,9 @@ export async function handleCommand(interaction: InteractionSchema): Promise<IIn
 
         case 'leaderboard':
             return await leaderboard(interaction.data);
+
+        case 'delete':
+            return await deleteUser(interaction.member);
 
         default:
             interaction.data satisfies never;

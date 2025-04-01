@@ -9,3 +9,22 @@ export interface IInteractionResponse {
         content: string;
     }
 }
+
+type CommandOption = {
+    name: string;
+    description: string;
+    type: number;
+    required: boolean;
+    min_length?: number;
+    max_length?: number;
+    choices?: {
+        name: string;
+        value: number;
+    }[];
+};
+
+export type CommandDefinition = {
+    name: string;
+    description: string;
+    options: CommandOption[];
+};

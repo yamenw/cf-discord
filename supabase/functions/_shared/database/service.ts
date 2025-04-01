@@ -77,6 +77,20 @@ async function insertProblems(new_submissions: ISubmissionModel[], user_id: stri
     return data;
 }
 
+async function deleteUserByDiscordId(discord_id: string) {
+    const { data, error } = await supabase
+        .from('users')
+        .delete()
+        .eq('discord_user_id', discord_id);
+
+    if (error) {
+        console.error(error);
+        throw error;
+    }
+
+    return data;
+}
+
 async function getUserScoresREST(days_since: number) {
     const { data, error } = await supabase
         .rpc('get_user_scores_rest', {
@@ -103,6 +117,7 @@ export const dbService = {
     getUserScores,
     getUserScoresREST,
     insertProblems,
+    deleteUserByDiscordId,
     CONTSTANTS: {
         UNRATED_PLACEHOLDER: -1
     } as const,
