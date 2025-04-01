@@ -77,6 +77,12 @@ async function insertProblems(new_submissions: ISubmissionModel[], user_id: stri
     return data;
 }
 
+/**
+ * This will cause a cascade delete on the users submissions
+ * 
+ * @param discord_id Discord ID of the user to delete
+ * @returns 
+ */
 async function deleteUserByDiscordId(discord_id: string) {
     const { data, error } = await supabase
         .from('users')

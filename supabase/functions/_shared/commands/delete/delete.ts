@@ -11,7 +11,7 @@ export async function deleteUser(member: MemberSchema): Promise<IInteractionResp
 
     return {
         data: {
-            content: `Delete user with ID ${member.user.id} (<@${member.user.id}>) from the database.`,
+            content: `Delete user with ID \`${member.user.id}\` (<@${member.user.id}>) from the database.`,
         }, type: 4
     }
 }
